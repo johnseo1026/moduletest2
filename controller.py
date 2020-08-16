@@ -85,7 +85,8 @@ class Member_Controller:
             self.siv.login_success()
             self.result = self.member_model.login_ok(d.email,d.passwd)
             print("result",self.result)
-            Member_Controller.cookie_email = self.result
+            # Member_Controller.cookie_email = self.result
+            Member_Controller.cookie_email= email
             print("cookieemail", Member_Controller.cookie_email)
         else:
             self.siv.login_false()

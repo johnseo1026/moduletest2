@@ -40,7 +40,7 @@ app.get('/health', (req, res) => {
 
 // 이메일 검증
 app.get('/users/Confirm/:email', (req, res) => {
-    var email = req.params.email;
+    var email = req.query.email;
     if(email){
         connection.query('select `email` from `member` where `email`=?',
         [email], (error, rows) => {
@@ -63,13 +63,14 @@ app.post('/users', (req, res) => {
     connection.query('insert into `member` (`email`,`passwd`,`name`,`nickname`,`phonenumber`,`birthday`,`address`) values (?,?,?,?,?,?,?)',
     [email,passwd,name,nickname,phonenumber,birthday,address], (error, rows) => {
     if (error) throw error;
-    res.json({True:True});
+    // res.json({True:True});
+    res.json(rows);
     });
 });
 
 // 유저 수정
 app.put('/users/update/:email', (req, res) => {
-    var email = req.params.email;
+    var email = req.query.email;
     var passwd = req.body.passwd;
     var nickname = req.body.nickname;
     var phonenumber = req.body.phonenumber;
@@ -84,7 +85,7 @@ app.put('/users/update/:email', (req, res) => {
 
 // 유저 탈퇴
 app.delete('/users/delete/:email', (req, res) => {
-    var email = req.params.email;
+    var email = req.query.email;
     connection.query('delete from `member` where `email`=?',[email], (error, rows) => {
     if (error) throw error;
     console.log('User info is: ', rows);
@@ -94,7 +95,7 @@ app.delete('/users/delete/:email', (req, res) => {
 
 // 유저 정보 (가능)
 app.get('/users/info/:email', (req, res) => {
-    var email = req.params.email;
+    var email = req.query.email;
     connection.query('select * from `member` where `email`=?',[email], (error, rows) => {
     if (error) throw error;
     console.log('User info is: ', rows);
@@ -104,7 +105,7 @@ app.get('/users/info/:email', (req, res) => {
 
 // 회원탈퇴 클럽멤버십 삭제
 app.delete('/users/delete/clubMembership:email',(req,res) =>{
-  var email = req.params.email
+  var email = req.query.email
   connection.query('delete from `clubmembership` where `m_email`=?',[email],(error,rows) => {
   if(error) throw error;
   console.log('User info is: ', rows);
@@ -114,7 +115,7 @@ app.delete('/users/delete/clubMembership:email',(req,res) =>{
 
 // 생성한 클럽 전체 탈퇴
 app.delete('/users/delete/Allclub:email',(req,res) =>{
-  var email = req.params.email
+  var email = req.query.email
   connection.query('delete from `travelclub` where `c_email`=?',[email],(error,rows) => {
   if(error) throw error;
   console.log('User info is: ', rows);
